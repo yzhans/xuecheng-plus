@@ -2,6 +2,7 @@ package com.xuecheng;
 
 
 import com.spring4all.swagger.EnableSwagger2Doc;
+import io.swagger.annotations.Api;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

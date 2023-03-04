@@ -1,15 +1,20 @@
 package com.xuecheng;
 
+import com.alibaba.fastjson.JSON;
+import com.xuecheng.base.exception.CommonError;
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
 import com.xuecheng.content.mapper.CourseBaseMapper;
 import com.xuecheng.content.service.CourseBaseInfoService;
+import com.xuecheng.content.service.CourseCategoryService;
+import com.xuecheng.model.dto.CourseCategoryDto;
 import com.xuecheng.model.dto.QueryCourseParamsDto;
 import com.xuecheng.model.po.CourseBase;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author yzhans
@@ -26,6 +31,9 @@ public class ContentServiceApplicationTests {
     @Resource
     private CourseBaseInfoService courseBaseInfoService;
 
+    @Resource
+    private CourseCategoryService categoryService;
+
     @Test
     void testCourseBaseMapper() {
         CourseBase courseBase = courseBaseMapper.selectById(1);
@@ -37,5 +45,18 @@ public class ContentServiceApplicationTests {
 
         PageResult<CourseBase> list = courseBaseInfoService.queryCourseBaseList(new PageParams(), new QueryCourseParamsDto());
         System.out.println(list);
+    }
+
+    @Test
+    void test2() {
+        List<CourseCategoryDto> courseCategoryDtoList = categoryService.queryTreeNodes("1");
+        Object json = JSON.toJSON(courseCategoryDtoList);
+        System.out.println(json);
+    }
+
+    @Test
+    void testEnumeration() {
+        System.out.println(CommonError.UNKOWN_ERROR.getErrMessage());
+        System.out.println(CommonError.UNKOWN_ERROR);
     }
 }
