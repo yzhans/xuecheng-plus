@@ -5,6 +5,7 @@ import com.xuecheng.base.model.PageResult;
 
 import com.xuecheng.model.dto.AddCourseDto;
 import com.xuecheng.model.dto.CourseBaseInfoDto;
+import com.xuecheng.model.dto.EditCourseDto;
 import com.xuecheng.model.dto.QueryCourseParamsDto;
 import com.xuecheng.model.po.CourseBase;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,4 +37,22 @@ public interface CourseBaseInfoService {
     * @date 2023/3/3 15:01
     */
     CourseBaseInfoDto createCourseBase(Long companyId,AddCourseDto addCourseDto);
+
+    /***
+    * @description 按id查询课程基本数据
+    * @param id 课程id
+    * @return 课程基本数据
+    * @author yzhans
+    * @date 2023/3/5 0:22
+    */
+    CourseBaseInfoDto courseBaseInfoService(Long id);
+
+    /***
+    * @description 修改课程基本信息
+    * @param editCourseDto 修改的课程数据
+    * @return 课程基本数据
+    * @author yzhans
+    * @date 2023/3/5 2:03
+    */
+    CourseBaseInfoDto updateCourseBaseById(Long companyId,EditCourseDto editCourseDto);
 }

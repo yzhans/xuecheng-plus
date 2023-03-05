@@ -1,20 +1,19 @@
 package com.xuecheng.content.api;
 
-import com.xuecheng.base.exception.ValidationGroups;
+
+
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
 import com.xuecheng.content.service.CourseBaseInfoService;
 import com.xuecheng.model.dto.AddCourseDto;
 import com.xuecheng.model.dto.CourseBaseInfoDto;
+import com.xuecheng.model.dto.EditCourseDto;
 import com.xuecheng.model.dto.QueryCourseParamsDto;
 import com.xuecheng.model.po.CourseBase;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -25,7 +24,7 @@ import javax.annotation.Resource;
  * @description TODO
  * @date 2023/3/1 23:19
  */
-@Api(value = "课程管理接口",tags = "课程管理接口")
+@Api(value = "课程管理接口", tags = "课程管理接口")
 @RestController
 @RequestMapping("/course")
 public class CourseBaseInfoController {
@@ -41,12 +40,23 @@ public class CourseBaseInfoController {
     }
 
     @ApiOperation("新增课程")
-    @PostMapping()
+    @PostMapping()  //添加校验组
     public CourseBaseInfoDto createCourseBase(
-            @RequestBody @Validated(ValidationGroups.Insert.class) AddCourseDto addCourseDto) {
+            @RequestBody @Validated AddCourseDto addCourseDto) {
         //企业id传入
         Long companyId = 88L;
         return courseBaseInfoService.createCourseBase(companyId, addCourseDto);
     }
 
+    @ApiOperation("课程编辑回显接口")
+    @GetMapping("/{id}")
+    public CourseBaseInfoDto getCourseBaseById(@PathVariable("id") Long id) {
+        return courseBaseInfoService.courseBaseInfoService(id);
+    }
+
+    @ApiOperation("课程修改接口")
+    @PutMapping()
+    public CourseBaseInfoDto updateCourseBaseById(@RequestBody EditCourseDto editCourseDto) {
+        return courseBaseInfoService.updateCourseBaseById(1232141425L,editCourseDto);
+    }
 }
