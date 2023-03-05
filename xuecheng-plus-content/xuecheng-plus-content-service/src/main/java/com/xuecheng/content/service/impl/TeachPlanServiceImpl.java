@@ -52,6 +52,7 @@ public class TeachPlanServiceImpl implements TeachPlanService {
     @Override
     public void deleteTeachPlan(Long id) {
         teachplanMapper.deleteById(id);
+
     }
 
     //获取orderby
