@@ -6,17 +6,14 @@ import com.xuecheng.base.exception.CommonError;
 import com.xuecheng.base.exception.XueChangException;
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
-import com.xuecheng.content.mapper.CourseBaseMapper;
-import com.xuecheng.content.mapper.CourseCategoryMapper;
-import com.xuecheng.content.mapper.CourseMarketMapper;
+import com.xuecheng.content.mapper.*;
 import com.xuecheng.content.service.CourseBaseInfoService;
+import com.xuecheng.content.service.CourseTeacherService;
 import com.xuecheng.model.dto.AddCourseDto;
 import com.xuecheng.model.dto.CourseBaseInfoDto;
 import com.xuecheng.model.dto.EditCourseDto;
 import com.xuecheng.model.dto.QueryCourseParamsDto;
-import com.xuecheng.model.po.CourseBase;
-import com.xuecheng.model.po.CourseCategory;
-import com.xuecheng.model.po.CourseMarket;
+import com.xuecheng.model.po.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -48,6 +45,12 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
 
     @Resource
     private CourseMarketServiceImpl courseMarketService;
+
+    @Resource
+    private CourseTeacherMapper courseTeacherMapper;
+
+    @Resource
+    private TeachplanMapper teachplanMapper;
 
     @Override
     public PageResult<CourseBase> queryCourseBaseList(
@@ -101,9 +104,9 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         //设置创建时间
         courseBase.setCreateDate(LocalDateTime.now());
         //审核状态默认为未提交
-        courseBase.setAuditStatus("20202");
+        courseBase.setAuditStatus("202002");
         //发布状态默认为未发布
-        courseBase.setStatus("20301");
+        courseBase.setStatus("203001");
         //插入课程基本信息表
         int number1 = courseBaseMapper.insert(courseBase);
         //获取课程id
@@ -204,4 +207,23 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
     }
 
 
+    @Transactional
+    @Override
+    public void deleteCourseBaseById(Long companyId, Long courseId) {
+        CourseBase courseBase = courseBaseMapper.selectById(courseId);
+        if (!companyId.equals(courseBase.getCompanyId()))
+            XueChangException.cast("只允许删除本机构的课程");
+        //删除教师信息
+        LambdaQueryWrapper<CourseTeacher> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(CourseTeacher::getCourseId, courseId);
+        courseTeacherMapper.delete(wrapper);
+        //删除教学计划
+        LambdaQueryWrapper<Teachplan> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Teachplan::getCourseId, courseId);
+        teachplanMapper.delete(queryWrapper);
+        //删除营销信息
+        courseMarketMapper.deleteById(courseId);
+        //删除课程基本信息
+        courseBaseMapper.deleteById(courseId);
+    }
 }

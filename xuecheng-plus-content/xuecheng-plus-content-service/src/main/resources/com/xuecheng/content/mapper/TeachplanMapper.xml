@@ -29,9 +29,8 @@
 
 
     <resultMap id="getTeachPlanTreeNodesMap" type="com.xuecheng.model.dto.TeachPlanDto">
-        <!-- 一级数据映射 -->
-        <id     column="one_id"        property="id" />
-        <result column="one_pname"      property="pname" />
+        <id column="one_id" property="id"></id>
+        <result column="one_pname" property="pname"></result>
         <result column="one_parentid"     property="parentid" />
         <result column="one_grade"  property="grade" />
         <result column="one_mediaType"   property="mediaType" />
@@ -40,15 +39,9 @@
         <result column="one_orderby"   property="orderby" />
         <result column="one_courseId"   property="courseId" />
         <result column="one_coursePubId"   property="coursePubId" />
-        <association property="teachplanMedia" javaType="com.xuecheng.model.po.TeachplanMedia">
-            <result column="teachplanMeidaId"   property="id" />
-            <result column="mediaFilename" property="mediaFilename"/>
-            <result column="mediaId" property="mediaId"/>
-        </association>
         <collection property="teachPlanTreeNodes" ofType="com.xuecheng.model.dto.TeachPlanDto">
-            <!-- 二级数据映射 -->
-            <id     column="two_id"        property="id" />
-            <result column="two_pname"      property="pname" />
+            <id column="two_id" property="id"></id>
+            <result column="two_pname" property="pname"></result>
             <result column="two_parentid"     property="parentid" />
             <result column="two_grade"  property="grade" />
             <result column="two_mediaType"   property="mediaType" />
@@ -57,6 +50,11 @@
             <result column="two_orderby"   property="orderby" />
             <result column="two_courseId"   property="courseId" />
             <result column="two_coursePubId"   property="coursePubId" />
+            <association property="teachplanMedia" javaType="com.xuecheng.model.po.TeachplanMedia">
+                <id column="teachplanMeidaId" property="id"></id>
+                <result column="mediaFilename" property="mediaFilename"></result>
+                <result column="mediaId" property="mediaId"></result>
+            </association>
         </collection>
     </resultMap>
 

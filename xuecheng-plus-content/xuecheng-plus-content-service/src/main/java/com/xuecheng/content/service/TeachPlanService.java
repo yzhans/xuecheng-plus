@@ -42,4 +42,23 @@ public interface TeachPlanService {
     */
     void deleteTeachPlan(Long id);
 
+    /***
+     * @description 删除视频信息
+     * @param id 节点id
+     * @return void
+     * @author yzhans
+     * @date 2023/3/5 14:29
+     */
+    void deleteTeachPlanVideo(Long id);
+
+    /***
+    * @description 上移或下节点排序
+    * @param id 接点id
+    * @return void
+    * @author yzhans
+    * @date 2023/3/6 15:27
+    */
+    void mobileTeachingPlan(String moveType,Long id);
+
+
 }

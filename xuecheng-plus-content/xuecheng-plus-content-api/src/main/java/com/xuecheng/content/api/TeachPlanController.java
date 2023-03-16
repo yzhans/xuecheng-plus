@@ -43,4 +43,17 @@ public class TeachPlanController {
     public void deleteTeachPlan(@PathVariable("id") Long id) {
         teachPlanService.deleteTeachPlan(id);
     }
+    @ApiOperation("删除节点视频信息")
+    @DeleteMapping("association/media/null/{id}")
+    public void deleteTeachPlanVideo(@PathVariable("id") Long id) {
+        teachPlanService.deleteTeachPlanVideo(id);
+    }
+
+
+    @ApiOperation("上移节点信息")
+    @PostMapping("/{moveType}/{id}")
+    public void mobileTeachingPlan(@PathVariable("moveType") String moveType,@PathVariable("id") Long id) {
+        teachPlanService.mobileTeachingPlan(moveType,id);
+    }
+
 }
