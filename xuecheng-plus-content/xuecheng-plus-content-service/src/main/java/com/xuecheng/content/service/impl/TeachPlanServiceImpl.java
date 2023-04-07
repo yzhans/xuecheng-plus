@@ -5,6 +5,7 @@ import com.xuecheng.base.exception.XueChangException;
 import com.xuecheng.content.mapper.TeachplanMapper;
 import com.xuecheng.content.mapper.TeachplanMediaMapper;
 import com.xuecheng.content.service.TeachPlanService;
+import com.xuecheng.model.dto.BindTeachPlanMediaDto;
 import com.xuecheng.model.dto.SaveTeachplanDto;
 import com.xuecheng.model.dto.TeachPlanDto;
 import com.xuecheng.model.po.Teachplan;
@@ -13,8 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -172,4 +175,31 @@ public class TeachPlanServiceImpl implements TeachPlanService {
         return teachplanMapper.selectCount(wrapper);
     }
 
+    @Transactional
+    @Override
+    public void associationMedia(BindTeachPlanMediaDto bindTeachplanMediaDto) {
+        //课程id
+        Long teachplanId = bindTeachplanMediaDto.getTeachplanId();
+        Teachplan teachplan = teachplanMapper.selectById(teachplanId);
+        if (teachplan == null) {
+            XueChangException.cast("课程计划不存在");
+        }
+        Integer grade = teachplan.getGrade();
+        if (grade != 2) {
+            XueChangException.cast("只允许第二级教学计划绑定媒资文件");
+        }
+        //课程id
+        Long courseId = teachplan.getCourseId();
+        //先删除原来该教学计划绑定的媒资
+        teachplanMediaMapper.delete(new LambdaQueryWrapper<TeachplanMedia>()
+                .eq(TeachplanMedia::getTeachplanId, teachplanId));
+        //添加新记录
+        TeachplanMedia teachplanMedia = new TeachplanMedia();
+        BeanUtils.copyProperties(bindTeachplanMediaDto, teachplanMedia);
+        teachplanMedia.setCourseId(teachplan.getCourseId());
+        teachplanMedia.setCreateDate(LocalDateTime.now());
+        teachplanMedia.setMediaFilename(bindTeachplanMediaDto.getFileName());
+        teachplanMediaMapper.insert(teachplanMedia);
+
+    }
 }

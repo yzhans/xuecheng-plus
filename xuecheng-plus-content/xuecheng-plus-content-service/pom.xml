@@ -12,6 +12,12 @@
     <artifactId>xuecheng-plus-content-service</artifactId>
 
     <dependencies>
+        <!--sdk工具包-->
+        <dependency>
+            <groupId>com.xuecheng</groupId>
+            <artifactId>xuecheng-plus-message-sdk</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!--nacos-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

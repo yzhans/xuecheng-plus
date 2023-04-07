@@ -39,11 +39,9 @@ public class MinIoTest {
         //上传文件的参数信息
         UploadObjectArgs uploadObjectArgs = UploadObjectArgs.builder()
                 .bucket("testsc")//桶
-                .filename("D:\\download\\psbw.mp3")//指定本地上传文件路径
-                .object("psbw.mp3")//对象名
+                .filename("D:\\download\\柯南.mp4")//指定本地上传文件路径
+                .object("柯南.mp4")//对象名
                 .build();
-
-
         //上传文件
         minioClient.uploadObject(uploadObjectArgs);
 

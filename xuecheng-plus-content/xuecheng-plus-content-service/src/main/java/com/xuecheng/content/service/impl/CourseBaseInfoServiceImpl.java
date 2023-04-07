@@ -154,6 +154,7 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         return b ? 1 : 0;
     }
 
+    @Transactional
     @Override
     public CourseBaseInfoDto courseBaseInfoService(Long courseId) {
         //课程基本信息

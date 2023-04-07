@@ -71,6 +71,4 @@ public class BigFilesController {
         Long companyId = 1232141425L;
         return mediaFileService.mergechunks(companyId, fileMd5, chunkTotal, dto);
     }
-
-
 }

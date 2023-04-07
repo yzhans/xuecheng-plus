@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 
+ * 教学计划媒体
  * </p>
  *
  * @author yzhans

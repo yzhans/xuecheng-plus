@@ -71,6 +71,11 @@ public class MediaFileServiceImpl implements MediaFileService {
     @Value("${minio.bucket.videofiles}")
     private String videofiles;
 
+    @Override
+    public MediaFiles getFileById(String mediaId) {
+        return mediaFilesMapper.selectById(mediaId);
+    }
+
     /***
     * @description 分块文件上传接口
     * @param fileMd5 分块文件id
@@ -97,15 +102,19 @@ public class MediaFileServiceImpl implements MediaFileService {
     public RestResponse<Boolean> checkChunk(String fileMd5, int chunk) {
         //根据md5得到分块文件的路径
         String blockPath = getThePartitionFileDirectory(fileMd5);
+        //分块文件路径
+        String blockFilePath = blockPath + chunk;
         //查找参数
         GetObjectArgs getObjectArgs = GetObjectArgs.builder()
                 .bucket(videofiles)
-                .object(blockPath + chunk)
+                .object(blockFilePath)
                 .build();
+        InputStream objectResponse = null;
         try {
             //查找
-            FilterInputStream objectResponse = minioClient.getObject(getObjectArgs);
+            objectResponse = minioClient.getObject(getObjectArgs);
             if (objectResponse != null) {
+                //文件存在
                 return RestResponse.success(true);
             }
         } catch (Exception e) {
@@ -147,7 +156,7 @@ public class MediaFileServiceImpl implements MediaFileService {
     }
 
     /***
-    * @description 查询已上传的文件
+    * @description 查询已上传的文件列表
     * @param companyId 企业id
      * @param pageParams 分页参数
      * @param queryMediaParamsDto 查询条件
@@ -161,7 +170,13 @@ public class MediaFileServiceImpl implements MediaFileService {
         //构建查询条件对象
         LambdaQueryWrapper<MediaFiles> queryWrapper = new LambdaQueryWrapper<>();
         Long i = 1232141425L;
-        queryWrapper.eq(MediaFiles::getCompanyId, i);
+        String auditStatus = queryMediaParamsDto.getAuditStatus();
+        String type = queryMediaParamsDto.getType();
+        String filename = queryMediaParamsDto.getFilename();
+        queryWrapper.eq(MediaFiles::getCompanyId, i)
+                .like(StringUtils.isNotEmpty(filename),MediaFiles::getFilename, filename)
+                .eq(StringUtils.isNotEmpty(type),MediaFiles::getFileType, type)
+                .eq(StringUtils.isNotEmpty(auditStatus),MediaFiles::getAuditStatus, auditStatus);
 
         //分页对象
         Page<MediaFiles> page = new Page<>(pageParams.getPageNo(), pageParams.getPageSize());

@@ -45,7 +45,7 @@ public class CourseBaseInfoController {
     public CourseBaseInfoDto createCourseBase(
             @RequestBody @Validated AddCourseDto addCourseDto) {
         //企业id传入
-        Long companyId = 88L;
+        Long companyId = 1232141425L;
         return courseBaseInfoService.createCourseBase(companyId, addCourseDto);
     }
 
@@ -58,14 +58,14 @@ public class CourseBaseInfoController {
     @ApiOperation("课程修改接口")
     @PutMapping()
     public CourseBaseInfoDto updateCourseBaseById(@RequestBody EditCourseDto editCourseDto) {
-        return courseBaseInfoService.updateCourseBaseById(88L,editCourseDto);
+        return courseBaseInfoService.updateCourseBaseById(1232141425L,editCourseDto);
     }
 
 
     @ApiOperation("课程删除接口")
     @DeleteMapping("/{courseId}")
     public void deleteCourseBaseById(@PathVariable("courseId") Long courseId) {
-        courseBaseInfoService.deleteCourseBaseById(88L,courseId);
+        courseBaseInfoService.deleteCourseBaseById(1232141425L,courseId);
     }
 
 }

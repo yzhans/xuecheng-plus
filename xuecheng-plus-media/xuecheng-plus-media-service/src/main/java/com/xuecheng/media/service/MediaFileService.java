@@ -22,6 +22,15 @@ import java.util.List;
  */
 public interface MediaFileService {
 
+    /***
+    * @description 根据媒资id查询media_files中的数据
+    * @param mediaId 媒资id
+    * @return com.xuecheng.media.model.po.MediaFiles
+    * @author yzhans
+    * @date 2023/3/18 2:51
+    */
+    MediaFiles getFileById(String mediaId);
+
     /**
      * @param pageParams          分页参数
      * @param queryMediaParamsDto 查询条件
@@ -45,12 +54,12 @@ public interface MediaFileService {
 
 
     /***
-    * @description 判断md5是否存在数据库或minio
-    * @param fileMd5 文件md5
-    * @return com.xuecheng.base.model.RestResponse<java.lang.Boolean>
-    * @author yzhans
-    * @date 2023/3/10 18:18
-    */
+     * @description 判断md5是否存在数据库或minio
+     * @param fileMd5 文件md5
+     * @return com.xuecheng.base.model.RestResponse<java.lang.Boolean>
+     * @author yzhans
+     * @date 2023/3/10 18:18
+     */
     RestResponse<Boolean> checkFile(String fileMd5);
 
     /***
@@ -64,14 +73,14 @@ public interface MediaFileService {
     RestResponse<Boolean> checkChunk(String fileMd5, int chunk);
 
     /***
-    * @description 上传分块文件
-    * @param fileMd5 文件md5
+     * @description 上传分块文件
+     * @param fileMd5 文件md5
      * @param chunk 分块数
      * @param localFilePath 本地路径
-    * @return com.xuecheng.base.model.RestResponse
-    * @author yzhans
-    * @date 2023/3/10 18:51
-    */
+     * @return com.xuecheng.base.model.RestResponse
+     * @author yzhans
+     * @date 2023/3/10 18:51
+     */
     RestResponse uploadChunk(String fileMd5, int chunk, String localFilePath);
 
     /**
