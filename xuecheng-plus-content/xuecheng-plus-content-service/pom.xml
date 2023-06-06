@@ -12,6 +12,13 @@
     <artifactId>xuecheng-plus-content-service</artifactId>
 
     <dependencies>
+        <!--xxl依赖-->
+        <!-- https://mvnrepository.com/artifact/com.xuxueli/xxl-job-core -->
+        <dependency>
+            <groupId>com.xuxueli</groupId>
+            <artifactId>xxl-job-core</artifactId>
+            <version>2.4.0</version>
+        </dependency>
         <!--sdk工具包-->
         <dependency>
             <groupId>com.xuecheng</groupId>

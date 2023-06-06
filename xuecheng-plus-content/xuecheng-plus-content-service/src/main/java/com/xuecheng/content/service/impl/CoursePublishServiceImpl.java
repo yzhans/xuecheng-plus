@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -135,7 +136,7 @@ public class CoursePublishServiceImpl implements CoursePublishService {
         if (coursePublishPre == null) {
             XueChangException.cast("课程没有审核记录，无法发布");
         }
-        if (companyId.equals(coursePublishPre.getCompanyId())) {
+        if (!companyId.equals(coursePublishPre.getCompanyId())) {
             XueChangException.cast("请登录该课程绑定的公司账号进行发布");
         }
         //取出状态 进行校验
@@ -155,11 +156,11 @@ public class CoursePublishServiceImpl implements CoursePublishService {
         //向消息表写入数据
         saveCoursePublishMessage(courseId);
         //将预发布表数据删除
-        coursePublishMapper.deleteById(coursePublishPre);
+        coursePublishPreMapper.deleteById(coursePublishPre);
     }
 
     /***
-    * @description 保存消息记录
+    * @description 向定时任务消息表写入数据
     * @param courseId 课程id
     * @return void
     * @author yzhans

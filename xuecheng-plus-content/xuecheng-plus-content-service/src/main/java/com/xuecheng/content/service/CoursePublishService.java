@@ -39,4 +39,6 @@ public interface CoursePublishService {
     * @date 2023/3/29 6:40
     */
     void coursePublish(Long companyId,Long courseId);
+
+
 }

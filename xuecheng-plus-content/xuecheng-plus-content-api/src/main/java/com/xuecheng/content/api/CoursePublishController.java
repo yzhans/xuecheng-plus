@@ -43,9 +43,10 @@ public class CoursePublishController {
 
     @ApiOperation("课程发布")
     @ResponseBody
-    @PostMapping("/coursepublsh/{courseId}")
+    @PostMapping("/coursepublish/{courseId}")
     public void coursePublish(@PathVariable("courseId") Long courseId) {
         Long companyId = 1232141425L;
         coursePublishService.coursePublish(companyId,courseId);
     }
+
 }
