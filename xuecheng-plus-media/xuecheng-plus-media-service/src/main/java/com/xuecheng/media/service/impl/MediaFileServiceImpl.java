@@ -195,12 +195,13 @@ public class MediaFileServiceImpl implements MediaFileService {
     * @param companyId 企业id
      * @param uploadFileParamsDto 文件参数信息
      * @param localFilePath 上传端文件绝对路径
+     * @param objectName 对象名 有则存储在指定位置
     * @return com.xuecheng.media.model.dto.UploadFileResultDto
     * @author yzhans
     * @date 2023/3/15 20:59
     */
     @Override
-    public UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, String localFilePath) {
+    public UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, String localFilePath,String objectName) {
         //获取文件名
         String filename = uploadFileParamsDto.getFilename();
         //得到后缀名
@@ -212,7 +213,9 @@ public class MediaFileServiceImpl implements MediaFileService {
         //获取md5 拼接在路径后面
         String fileMd5 = getFileMd5(new File(localFilePath));
         //拼接文件名
-        String objectName = route + fileMd5 + suffix;
+        if (StringUtils.isEmpty(objectName)) {
+            objectName = route + fileMd5 + suffix;
+        }
         //将文件上传到minio中
         Boolean aBoolean = addMediaFilesToMinIO(localFilePath, mimeType, files, objectName);
         if (!aBoolean) {

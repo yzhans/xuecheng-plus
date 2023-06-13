@@ -54,6 +54,7 @@
                 <id column="teachplanMeidaId" property="id"></id>
                 <result column="mediaFilename" property="mediaFilename"></result>
                 <result column="mediaId" property="mediaId"></result>
+                <result column="teachplanId" property="teachplanId"></result>
             </association>
         </collection>
     </resultMap>
@@ -82,7 +83,8 @@
             two.course_pub_id  two_coursePubId,
             m1.media_fileName mediaFilename,
             m1.id teachplanMeidaId,
-            m1.media_id mediaId
+            m1.media_id mediaId,
+            m1.teachplan_id teachplanId
 
         from teachplan one
                  LEFT JOIN teachplan two on one.id = two.parentid

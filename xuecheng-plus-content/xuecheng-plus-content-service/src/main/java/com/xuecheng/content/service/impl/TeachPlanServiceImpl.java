@@ -81,11 +81,13 @@ public class TeachPlanServiceImpl implements TeachPlanService {
     }
 
     @Override
-    public void deleteTeachPlanVideo(Long id) {
+    public void deleteTeachPlanVideo(String id) {
         if (id == null) {
             XueChangException.cast("删除失败");
         }
-        int i = teachplanMapper.deleteById(id);
+        LambdaQueryWrapper<TeachplanMedia> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(TeachplanMedia::getMediaId, id);
+        int i = teachplanMediaMapper.delete(queryWrapper);
         if (i <= 0) {
             XueChangException.cast("删除失败");
         }
@@ -200,6 +202,5 @@ public class TeachPlanServiceImpl implements TeachPlanService {
         teachplanMedia.setCreateDate(LocalDateTime.now());
         teachplanMedia.setMediaFilename(bindTeachplanMediaDto.getFileName());
         teachplanMediaMapper.insert(teachplanMedia);
-
     }
 }

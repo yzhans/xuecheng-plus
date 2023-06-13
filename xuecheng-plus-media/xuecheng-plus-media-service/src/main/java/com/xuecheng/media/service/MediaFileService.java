@@ -46,11 +46,12 @@ public interface MediaFileService {
      * @param companyId 企业id
      * @param uploadFileParamsDto 文件的信息
      * @param localFilePath 本地文件路径
+     * @param objectName 对象名 有则存储在指定位置
      * @return com.xuecheng.media.model.dto.UploadFileResultDto
      * @author yzhans
      * @date 2023/3/9 18:20
      */
-    public UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, String localFilePath);
+    public UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, String localFilePath,String objectName);
 
 
     /***

@@ -50,7 +50,7 @@ public interface TeachPlanService {
      * @author yzhans
      * @date 2023/3/5 14:29
      */
-    void deleteTeachPlanVideo(Long id);
+    void deleteTeachPlanVideo(String id);
 
     /***
     * @description 上移或下节点排序
@@ -69,4 +69,6 @@ public interface TeachPlanService {
     * @date 2023/3/17 1:48
     */
     void associationMedia(BindTeachPlanMediaDto bindTeachplanMediaDto);
+
+
 }
