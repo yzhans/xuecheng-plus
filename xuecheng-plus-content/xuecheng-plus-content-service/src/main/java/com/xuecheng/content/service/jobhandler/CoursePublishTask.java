@@ -1,5 +1,6 @@
 package com.xuecheng.content.service.jobhandler;
 
+import com.xuecheng.content.service.CoursePublishService;
 import com.xuecheng.messagesdk.model.po.MqMessage;
 import com.xuecheng.messagesdk.service.MessageProcessAbstract;
 import com.xuecheng.messagesdk.service.MqMessageService;
@@ -7,6 +8,9 @@ import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import java.io.File;
 
 
 /**
@@ -18,6 +22,9 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class CoursePublishTask extends MessageProcessAbstract {
+
+    @Resource
+    private CoursePublishService coursePublishService;
 
     //任务调度入口
     @XxlJob("CoursePublishJobHandler")
@@ -62,7 +69,14 @@ public class CoursePublishTask extends MessageProcessAbstract {
         //} catch (InterruptedException e) {
         //    throw new RuntimeException(e);
         //}
-        int i = 1 / 0;
+        //生成静态化页面
+        File file = coursePublishService.generateCourseHtml(courseId);
+        //上传静态化页面
+        if(file!=null){
+            coursePublishService.uploadCourseHtml(courseId,file);
+        }
+
+        //int i = 1 / 0;
         //保存第一阶段状态
         mqMessageService.completedStageOne(id);
 

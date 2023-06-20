@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * @author yzhans
  * @version 1.0
- * @description TODO
+ * @description 教学计划服务实施
  * @date 2023/3/5 11:32
  */
 @Slf4j
@@ -81,12 +81,13 @@ public class TeachPlanServiceImpl implements TeachPlanService {
     }
 
     @Override
-    public void deleteTeachPlanVideo(String id) {
-        if (id == null) {
+    public void deleteTeachPlanVideo(String teachPlanId,String id) {
+        if (id == null && teachPlanId == null) {
             XueChangException.cast("删除失败");
         }
         LambdaQueryWrapper<TeachplanMedia> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(TeachplanMedia::getMediaId, id);
+        queryWrapper.eq(TeachplanMedia::getTeachplanId, teachPlanId);
         int i = teachplanMediaMapper.delete(queryWrapper);
         if (i <= 0) {
             XueChangException.cast("删除失败");

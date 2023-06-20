@@ -50,7 +50,7 @@ public interface TeachPlanService {
      * @author yzhans
      * @date 2023/3/5 14:29
      */
-    void deleteTeachPlanVideo(String id);
+    void deleteTeachPlanVideo(String teachPlanId,String id);
 
     /***
     * @description 上移或下节点排序

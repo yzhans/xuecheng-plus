@@ -46,9 +46,9 @@ public class TeachPlanController {
     }
 
     @ApiOperation("删除节点视频信息")
-    @DeleteMapping("association/media/null/{id}")
-    public void deleteTeachPlanVideo(@PathVariable("id") String id) {
-        teachPlanService.deleteTeachPlanVideo(id);
+    @DeleteMapping("association/media/{teachPlanId}/{id}")
+    public void deleteTeachPlanVideo(@PathVariable("teachPlanId") String teachPlanId,@PathVariable("id") String id) {
+        teachPlanService.deleteTeachPlanVideo(teachPlanId,id);
     }
 
     @ApiOperation("上移节点信息")
