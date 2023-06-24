@@ -27,20 +27,19 @@ import java.util.stream.Stream;
  */
 public class MinIoTest {
 
-
     static MinioClient minioClient =
             MinioClient.builder()
                     .endpoint("http://110.41.137.10:9000")
-                    .credentials("minioadmin", "minioadmin")
+                    .credentials("ifkeyadmin123", "ifkeyadmin123")
                     .build();
 
     @Test
     void testUpload() throws Exception {
         //上传文件的参数信息
         UploadObjectArgs uploadObjectArgs = UploadObjectArgs.builder()
-                .bucket("testsc")//桶
-                .filename("D:\\download\\柯南.mp4")//指定本地上传文件路径
-                .object("柯南.mp4")//对象名
+                .bucket("video")//桶
+                .filename("D:\\x.mp4")//指定本地上传文件路径
+                .object("x.mp4")//对象名
                 .build();
         //上传文件
         minioClient.uploadObject(uploadObjectArgs);
@@ -52,8 +51,8 @@ public class MinIoTest {
 
         //删除文件的参数
         RemoveObjectArgs removeObjectArgs = RemoveObjectArgs.builder()
-                .bucket("testsc")
-                .object("psbw.mp3")
+                .bucket("video")
+                .object("cs/x.mp4")
                 .build();
         //删除文件
         minioClient.removeObject(removeObjectArgs);
@@ -64,14 +63,17 @@ public class MinIoTest {
 
         //查找参数
         GetObjectArgs getObjectArgs = GetObjectArgs.builder()
-                .bucket("testsc")
-                .object("psbw.mp3")
+                .bucket("video")
+                .object("x.mp4")
                 .build();
 
         //查找
         FilterInputStream objectResponse = minioClient.getObject(getObjectArgs);
+        if (objectResponse == null) {
+            return;
+        }
         //指定输出流
-        FileOutputStream outputStream = new FileOutputStream(new File("D:\\download\\c\\1.mp3"));
+        FileOutputStream outputStream = new FileOutputStream(new File("D:\\1.mp4"));
 
         IOUtils.copy(objectResponse, outputStream);
     }
