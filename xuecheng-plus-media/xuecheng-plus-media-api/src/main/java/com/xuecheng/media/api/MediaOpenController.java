@@ -57,8 +57,6 @@ public class MediaOpenController {
         if (mediaFiles == null) {
             return RestResponse.validfail("找不到视频");
         }
-        //取出视频名字
-        String filename = mediaFiles.getFilename();
         //取出桶id
         String bucket = mediaFiles.getBucket();
         //获取路径
