@@ -2,6 +2,7 @@ package com.xuecheng.content.api;
 
 import com.xuecheng.content.service.CoursePublishService;
 import com.xuecheng.model.dto.CoursePreviewDto;
+import com.xuecheng.model.po.CoursePublish;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ public class CoursePublishController {
     @Resource
     private CoursePublishService coursePublishService;
 
+    @ApiOperation("预览")
     @GetMapping("/coursepreview/{courseId}")
     public ModelAndView preview(@PathVariable("courseId") Long courseId) {
         ModelAndView modelAndView = new ModelAndView();
@@ -35,6 +37,7 @@ public class CoursePublishController {
         return modelAndView;
     }
 
+    @ApiOperation("提交审核")
     @ResponseBody
     @PostMapping("/courseaudit/commit/{courseId}")
     public void commitAudit(@PathVariable("courseId") Long courseId) {
@@ -47,6 +50,13 @@ public class CoursePublishController {
     public void coursePublish(@PathVariable("courseId") Long courseId) {
         Long companyId = 1232141425L;
         coursePublishService.coursePublish(companyId,courseId);
+    }
+
+    @ApiOperation("查询课程发布信息")
+    @ResponseBody
+    @GetMapping("/r/coursepublish/{courseId}")
+    public CoursePublish getCoursepublish(@PathVariable("courseId") Long courseId) {
+        return coursePublishService.getCoursePublish(courseId);
     }
 
 }

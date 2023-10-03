@@ -249,4 +249,16 @@ public class CoursePublishServiceImpl implements CoursePublishService {
             XueChangException.cast("上传静态文件异常");
         }
     }
+
+    /***
+    * @description 查询课程发布
+    * @param courseId 课程id
+    * @return com.xuecheng.model.po.CoursePublish
+    * @author xoo
+    * @date 2023/10/3 5:23
+    */
+    public CoursePublish getCoursePublish(Long courseId){
+        CoursePublish coursePublish = coursePublishMapper.selectById(courseId);
+        return coursePublish ;
+    }
 }

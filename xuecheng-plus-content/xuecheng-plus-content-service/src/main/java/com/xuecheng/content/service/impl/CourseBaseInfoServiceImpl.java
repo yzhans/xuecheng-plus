@@ -54,7 +54,7 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
 
     @Override
     public PageResult<CourseBase> queryCourseBaseList(
-            PageParams params, QueryCourseParamsDto queryCourseParamsDto) {
+            Long companyId, PageParams params, QueryCourseParamsDto queryCourseParamsDto) {
 
         LambdaQueryWrapper<CourseBase> queryWrapper = new LambdaQueryWrapper<>();
 
@@ -63,6 +63,12 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
                 StringUtils.isNotEmpty(queryCourseParamsDto.getCourseName()),
                 CourseBase::getName,
                 queryCourseParamsDto.getCourseName());
+
+        //根据培训机构id拼装查询条件
+        queryWrapper.eq(
+                companyId == null,
+                CourseBase::getCompanyId,
+                companyId);
 
         //课程审核状态
         queryWrapper.eq(
@@ -163,9 +169,9 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         CourseMarket courseMarket = courseMarketMapper.selectById(courseId);
         //组成要返回的数据
         CourseBaseInfoDto courseBaseInfoDto = new CourseBaseInfoDto();
-        BeanUtils.copyProperties(courseBase,courseBaseInfoDto);
-        if(courseMarket!=null){
-            BeanUtils.copyProperties(courseMarket,courseBaseInfoDto);
+        BeanUtils.copyProperties(courseBase, courseBaseInfoDto);
+        if (courseMarket != null) {
+            BeanUtils.copyProperties(courseMarket, courseBaseInfoDto);
         }
         //向分类的名称查询出来
         CourseCategory courseCategory = courseCategoryMapper.selectById(courseBase.getMt());//一级分类
@@ -181,17 +187,17 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         //课程id
         Long id = editCourseDto.getId();
         CourseBase courseBase = courseBaseMapper.selectById(id);
-        if(courseBase==null){
+        if (courseBase == null) {
             XueChangException.cast("课程不存在");
         }
 
         //校验本机构只能修改本机构的课程
-        if(!courseBase.getCompanyId().equals(companyId)){
+        if (!courseBase.getCompanyId().equals(companyId)) {
             XueChangException.cast("本机构只能修改本机构的课程");
         }
 
         //封装基本信息的数据
-        BeanUtils.copyProperties(editCourseDto,courseBase);
+        BeanUtils.copyProperties(editCourseDto, courseBase);
         courseBase.setChangeDate(LocalDateTime.now());
 
         //更新课程基本信息
@@ -199,7 +205,7 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
 
         //封装营销信息的数据
         CourseMarket courseMarket = new CourseMarket();
-        BeanUtils.copyProperties(editCourseDto,courseMarket);
+        BeanUtils.copyProperties(editCourseDto, courseMarket);
 
         insertCourseMarket(courseMarket);
 

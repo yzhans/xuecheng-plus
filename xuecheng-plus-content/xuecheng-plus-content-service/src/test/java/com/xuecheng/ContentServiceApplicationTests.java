@@ -43,7 +43,7 @@ public class ContentServiceApplicationTests {
     @Test
     void testCourseBaseInfoService() {
 
-        PageResult<CourseBase> list = courseBaseInfoService.queryCourseBaseList(new PageParams(), new QueryCourseParamsDto());
+        PageResult<CourseBase> list = courseBaseInfoService.queryCourseBaseList(null,new PageParams(), new QueryCourseParamsDto());
         System.out.println(list);
     }
 

@@ -26,7 +26,7 @@ public interface CourseBaseInfoService {
     * @author yzhans
     * @date 2023/3/2 13:42
     */
-    PageResult<CourseBase> queryCourseBaseList(PageParams params, @RequestBody QueryCourseParamsDto queryCourseParamsDto);
+    PageResult<CourseBase> queryCourseBaseList(Long companyId,PageParams params, @RequestBody QueryCourseParamsDto queryCourseParamsDto);
 
     /***
     * @description 新增课程

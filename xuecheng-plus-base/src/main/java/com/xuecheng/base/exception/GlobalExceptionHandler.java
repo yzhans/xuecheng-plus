@@ -55,7 +55,11 @@ public class GlobalExceptionHandler {
     public RestErrorResponse handleException(Exception e) {
         String eMessage = e.getMessage();
         //打印异常
-        log.error("捕获异常：{}",eMessage);
+        log.error("捕获异常：{}", eMessage);
+        if (e.getMessage().equals("不允许访问")) {
+            return new RestErrorResponse("你没有权限操作此功能");
+        }
+
         e.printStackTrace();
         return new RestErrorResponse(CommonError.UNKOWN_ERROR.getErrMessage());
     }

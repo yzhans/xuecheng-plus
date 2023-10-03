@@ -1,6 +1,7 @@
 package com.xuecheng.content.service;
 
 import com.xuecheng.model.dto.CoursePreviewDto;
+import com.xuecheng.model.po.CoursePublish;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.io.File;
@@ -58,5 +59,14 @@ public interface CoursePublishService {
      * @date 2023/3/29 6:40
      */
     public void  uploadCourseHtml(Long courseId, File file);
+
+    /***
+     * @description 查询课程发布
+     * @param courseId 课程id
+     * @return com.xuecheng.model.po.CoursePublish
+     * @author xoo
+     * @date 2023/10/3 5:23
+     */
+    public CoursePublish getCoursePublish(Long courseId);
 
 }
