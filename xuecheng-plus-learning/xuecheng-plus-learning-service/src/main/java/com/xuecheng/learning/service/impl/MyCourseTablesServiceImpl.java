@@ -11,7 +11,9 @@ import com.xuecheng.learning.model.po.XcChooseCourse;
 import com.xuecheng.learning.model.po.XcCourseTables;
 import com.xuecheng.learning.service.MyCourseTablesService;
 import com.xuecheng.model.po.CoursePublish;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -24,6 +26,8 @@ import java.util.List;
  * @description 选课接口实现
  * @date 2023/10/3 8:00
  */
+@Slf4j
+@Service
 public class MyCourseTablesServiceImpl implements MyCourseTablesService {
 
     @Resource
@@ -54,7 +58,7 @@ public class MyCourseTablesServiceImpl implements MyCourseTablesService {
             XcCourseTables xcCourseTables = addCourseTabls(xcChooseCourse);
         } else {//收费课程
             //向选课记录表写
-            xcChooseCourse = addFreeCoruse(userId, coursepublish);
+            xcChooseCourse = addChargeCoruse(userId, coursepublish);
         }
         //判断学生的学习资格
         XcCourseTablesDto learningStatus = getLearningStatus(userId, courseId);
@@ -189,4 +193,30 @@ public class MyCourseTablesServiceImpl implements MyCourseTablesService {
             xcCourseTablesDto.setLearnStatus("702001");
         return xcCourseTablesDto;
     }
+
+    @Transactional
+    @Override
+    public boolean saveChooseCourseSuccess(String chooseCourseId) {
+        XcChooseCourse xcChooseCourse = xcChooseCourseMapper.selectById(chooseCourseId);
+        if (xcChooseCourse == null) {
+            log.debug("接收购买课程的消息,根据选课id从数据库找不到选课记录,选课id:{}", chooseCourseId);
+            return false;
+        }
+        //获取选课状态
+        String status = xcChooseCourse.getStatus();
+        //为未支付时才修改状态
+        if (!"701002".equals(status)) {
+            return false;
+        }
+        xcChooseCourse.setStatus("701001");
+        int i = xcChooseCourseMapper.updateById(xcChooseCourse);
+        if (i <= 0) {
+            log.debug("修改选课记录失败，选课id:{}", chooseCourseId);
+            XueChangException.cast("修改选课记录失败");
+        }
+        //向我的课程表添加记录
+        XcCourseTables xcCourseTables = addCourseTabls(xcChooseCourse);
+        return true;
+    }
+
 }

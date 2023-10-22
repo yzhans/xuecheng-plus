@@ -54,13 +54,11 @@ public class MyCourseTablesController {
     public XcCourseTablesDto getLearnstatus(@PathVariable("courseId") Long courseId) {
         //登录用户
         SecurityUtil.XcUser user = SecurityUtil.getUser();
-        if (user == null) {
-            XueChangException.cast("请登录");
+        if(user == null){
+            XueChangException.cast("请登录后继续选课");
         }
-        //用户id
         String userId = user.getId();
-        XcCourseTablesDto learningStatus = myCourseTablesService.getLearningStatus(user.getId(), courseId);
-        return learningStatus;
+        return myCourseTablesService.getLearningStatus(userId, courseId);
     }
 
     @ApiOperation("我的课程表")
